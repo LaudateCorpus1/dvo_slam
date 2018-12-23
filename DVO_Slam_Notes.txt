@@ -1,4 +1,6 @@
 *** DVO Slam Notes ***
+There is a Kinetic dev branch!
+
 Dependencies:
 	Eigen
 
