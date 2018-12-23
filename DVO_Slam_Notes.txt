@@ -1,0 +1,52 @@
+*** DVO Slam Notes ***
+Dependencies:
+	Eigen
+
+
+A full example application, though running through ROS, can be found at: 
+
+dvo_slam/dvo_benchmark/src/benchmark_slam.cpp
+
+The object KeyframeTracker seems to do the tracking and graph mapping working
+
+Q: Is it worth figuring out how to get ROS working to test these codes out? Many of the newer Visual Slam applications use ROS. If so, this will take work.
+
+***
+dvo_slam/dvo_benchmark/src/benchmark_slam.cpp:
+
+Eigen::Affine3d is a Transformation of the form:
+[R t
+0  1]
+
+std::ostream is used for writing out trajectories	
+
+***
+dvo_slam/dvo_core/src/core/rgbd_image.cpp
+	Defines most of the operations upon images
+		-Derivatives
+		-Warping
+
+***
+dvo_core/src/dense_tracking.cpp
+	DenseTracker::math() does the frame to frame matching.
+		-It calls a lot of the math subroutines
+
+*** STRUCTURE ***
+There are clear layers from:
+	Keyframe tracker
+	Within Keyframe map
+	Between frame tracking
+
+Keyframe_tracker: main object, calls
+	local_tracker, which calls
+		local_map, which implements
+			g2o routines
+
+*** This is the main layer of calls ***
+Keyframe_tracker::update, which calls:
+	LocalTracker::update, which calls:
+		LocalTrackerImpl::match, which calls:
+			DenseTrack::match
+				-This matches frame	
+
+TODO: Figure out how graph optimization callbacks are signaled.

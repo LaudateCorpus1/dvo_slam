@@ -18,6 +18,8 @@
  *  along with dvo.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/* THIS IS WHERE THE WORK GETS DONE */
+
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 #include <Eigen/Eigenvalues>

@@ -43,16 +43,18 @@
 #include <dvo_benchmark/groundtruth.h>
 #include <dvo_benchmark/tools.h>
 
+//For Loading camera and rgb/depth data frame by frame
 dvo::core::RgbdImagePyramidPtr load(dvo::core::RgbdCameraPyramid& camera, std::string rgb_file, std::string depth_file)
 {
   cv::Mat rgb, grey, grey_s16, depth, depth_inpainted, depth_mask, depth_mono, depth_float;
 
   bool rgb_available = false;
-  rgb = cv::imread(rgb_file, 1);
-  depth = cv::imread(depth_file, -1);
+  rgb                = cv::imread(rgb_file, 1);
+  depth              = cv::imread(depth_file, -1);
 
   if(rgb.total() == 0 || depth.total() == 0) return dvo::core::RgbdImagePyramidPtr();
 
+  //Convert to single channel float 32
   if(rgb.type() != CV_32FC1)
   {
     if(rgb.type() == CV_8UC3)
@@ -443,6 +445,8 @@ void BenchmarkNode::run()
 
   dvo::core::RgbdImagePyramid::Ptr current;
 
+
+  //Process all RGB/Depth data frame by frame
   dvo::util::stopwatch sw_online("online", 1), sw_postprocess("postprocess", 1);
   sw_online.start();
   for(std::vector<dvo_benchmark::RgbdPair>::iterator it = pairs.begin(); ros::ok() && it != pairs.end(); ++it)
